@@ -1,7 +1,10 @@
 <template>
     <div>
         <div class="tag-title">制作与生成 <small>这些数据将会被自动保存，无须担心刷新页面</small></div>
-
+        <Alert type="success" show-icon>
+            提示
+            <template slot="desc">如果遇到任何的问题，可以加Q群 610085689 询问，没事也欢迎进群吹逼。</template>
+        </Alert>
         <!--基础信息-->
         <Card>
             <p class="tag-subtitle" slot="title">基本信息</p>
