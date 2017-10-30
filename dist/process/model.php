@@ -35,7 +35,7 @@ border-radius: 50%;
 "></div>
 				<div style="color: white;text-align: center; margin-top: 3px;">来自 <a href="http://bintro.smilec.org/" style="color: #bbb;">Bilibili Live 简介生成器</a></div>
 			</div>
-			<div style="width: 753px; height: 186px;float: left;">
+			<div style="width: calc(100% - 400px); height: 186px;float: left;">
 				<div style="background-color: rgba(255,255,255,0.5);
 				color: black;
 			    height: 140px;
@@ -44,6 +44,7 @@ border-radius: 50%;
 				border-radius: 5px;
 				color: white;
 				font-size: 15px;
+        overflow-y: auto;
 				text-shadow: black 1px 1.5px 1px;">
 				<?php echo $value['intro']; ?></div>
 			</div>
