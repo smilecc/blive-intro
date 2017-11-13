@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="tag-title">制作与生成 <small>这些数据将会被自动保存，无须担心刷新页面</small></div>
-        <Alert type="success" show-icon>
+        <Alert type="success" show-icon v-if="false">
             提示
             <template slot="desc">如果遇到任何的问题，可以加Q群 610085689 询问，没事也欢迎进群吹逼。</template>
         </Alert>
@@ -125,7 +125,7 @@
 
                 let postObj = JSON.parse(JSON.stringify(this.formItem))
                 postObj.tabs = JSON.stringify(this.$store.state.tabs)
-                this.$http.post('http://localhost/process/process.php', postObj, { emulateJSON: true }).then((response) => {
+                this.$http.post('/process/process.php', postObj, { emulateJSON: true }).then((response) => {
 					var body = response.body;
                     this.buildResult = body
 				});
