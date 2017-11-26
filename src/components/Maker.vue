@@ -125,7 +125,7 @@
 
                 let postObj = JSON.parse(JSON.stringify(this.formItem))
                 postObj.tabs = JSON.stringify(this.$store.state.tabs)
-                this.$http.post('/process/process.php', postObj, { emulateJSON: true }).then((response) => {
+                this.$http.post('http://bintro.smilec.cc/process/process.php', postObj, { emulateJSON: true }).then((response) => {
 					var body = response.body;
                     this.buildResult = body
 				});

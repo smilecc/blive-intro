@@ -15,3 +15,12 @@ function logic ($logicName)
 {
     return \think\Loader::model($logicName, 'logic');
 }
+
+function result ($code, $msg, $options=[])
+{
+    $result = [
+        'code' => intval($code),
+        'msg' => $msg,
+    ];
+    return array_merge($result, $options);
+}
