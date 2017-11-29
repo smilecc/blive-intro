@@ -15,6 +15,7 @@ class Index extends Controller
     public function test ()
     {
         $blive = new \Blive\User('');
-        $blive->getRoomId();
+        $roomid = $blive->getRoomId();
+        $blive->setIntroduce($roomid, '<p>hello world!!!!!</p>');
     }
 }

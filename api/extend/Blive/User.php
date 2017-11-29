@@ -39,12 +39,50 @@ class User {
             'Cookie:'.$this->cookie
         ]);
         list($body) = HttpCurl::request('http://api.live.bilibili.com/i/api/liveinfo', 'get', [], $header);
-        trace($header, 'debug');
-        trace($body, 'debug');
+
+        $result = json_decode($body, true);
+        trace($result, 'debug');
+        
+        if ($result == null) {
+            return false;
+        } else {
+            return $result['data']['roomid'];
+        }
     }
 
-    public function setIntroduce ()
+    public function setIntroduce ($roomid, $desc)
     {
+        $header = array_merge($this->defaultHeaders, [
+            'Cookie:'.$this->cookie
+        ]);
 
+        // 获取 csrf_token
+        $csrfToken = '';
+        $cookieArr = explode(';', $this->cookie);
+        foreach ($cookieArr as $key => $value) {
+            if (empty($value)) continue;
+            $cookie = explode('=', $value);
+            if (count($cookie) != 2) continue;
+
+            if ($cookie[0] == 'bili_jct') {
+                $csrfToken = $cookie[1];
+                break;
+            }
+        }
+        
+        // 提交数据
+        list($body) = HttpCurl::request('http://api.live.bilibili.com/room/v1/Room/update', 'post', [
+            'room_id' => $roomid,
+            'description' => $desc,
+            'csrf_token' => $csrfToken
+        ], $header);
+
+        // 解析数据
+        $result = json_decode($body, true);
+        if ($result == null) {
+            return false;
+        } else {
+            return ($result['code'] == 0);
+        }
     }
 }

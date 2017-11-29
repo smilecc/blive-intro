@@ -1,9 +1,12 @@
 <template>
     <div>
         <div class="tag-title">制作与生成 <small>这些数据将会被自动保存，无须担心刷新页面</small></div>
-        <Alert type="success" show-icon v-if="false">
+        <Alert type="success" show-icon>
             提示
-            <template slot="desc">如果遇到任何的问题，可以加Q群 610085689 询问，没事也欢迎进群吹逼。</template>
+            <template slot="desc">
+                <span>B站直播近期进行了页面改版，导致之前生成的代码无法自动适应，现在已经修复，重新生成即可适应新版页面。</span>
+                <span>在此感谢<a href="https://github.com/CDog34" target="_blank">PeterCao</a>同学提交的PR。</span>
+            </template>
         </Alert>
         <!--基础信息-->
         <Card>
