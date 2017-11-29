@@ -24,3 +24,8 @@ function result ($code, $msg, $options=[])
     ];
     return array_merge($result, $options);
 }
+
+function isLogin ()
+{
+    return array_key_exists('userId', $GLOBALS);
+}

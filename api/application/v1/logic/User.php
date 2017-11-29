@@ -50,4 +50,23 @@ class User extends Model
 
         return model('User')->createAccount($username, $email, $password);
     }
+
+    public function saveCookie ($cookie)
+    {
+        if (isLogin()) {
+            try {
+                if ((new \Blive\User($cookie))->checkUser()) {
+                    model('BilibiliCookie')->saveCookie($GLOBALS['userId'], $cookie);
+                    return result(1, '保存成功');
+                } else {
+                    return result(0, 'Cookie 无效');
+                }
+            } catch (\Exception $e) {
+                throw $e;
+                return result(0, '保存失败，系统错误');
+            }
+        } else {
+            return result(0, '请登录后再进行操作');
+        }
+    }
 }

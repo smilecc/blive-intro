@@ -85,4 +85,26 @@ class User {
             return ($result['code'] == 0);
         }
     }
+
+    public function checkUser ()
+    {
+        $header = array_merge($this->defaultHeaders, [
+            'Cookie:'.$this->cookie
+        ]);
+        
+        list($body) = HttpCurl::request('http://api.live.bilibili.com/User/getUserInfo', 'get', [
+            'ts' => time() * 1000
+        ], $header);
+        
+        $result = json_decode($body, true);
+        if ($result == null) {
+            return false;
+        } else {
+            if (array_key_exists('code', $result) && $result['code'] == 'REPONSE_OK') {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
 }

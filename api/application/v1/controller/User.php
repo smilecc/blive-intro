@@ -5,7 +5,7 @@ namespace app\v1\controller;
 use think\Controller;
 use think\Request;
 
-class User extends Controller
+class User extends Base
 {
     public function login ()
     {
@@ -22,5 +22,12 @@ class User extends Controller
         $password = input('post.password');
 
         return logic('User')->register($username, $email, $password);
+    }
+
+    public function set_cookie ()
+    {
+        $cookie = input('post.cookie');
+        
+        return logic('User')->saveCookie($cookie);
     }
 }

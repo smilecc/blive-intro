@@ -11,7 +11,8 @@ class UserSalt extends Model
 
     public function buildSalt ($user_id, $type=self::TYPE_LOGIN)
     {
-        $random = rand(1000, 999999);
+        $random =  md5(rand(1000, 999999) . time() . rand(1000, 999999));
+        $random = substr($random, rand(0, 15), 10);
 
         if (self::TYPE_REGISTER === $type) {
             if ($this->where('user_id', $user_id)->count() > 0) {
@@ -38,6 +39,20 @@ class UserSalt extends Model
             return null;
         } else {
             return $salt['random'];
+        }
+    }
+
+    public function checkLogin ($user_id, $random) {
+        $salt = $this->where([
+            'user_id' => $user_id,
+            'type' => self::TYPE_LOGIN,
+            'random' => $random
+        ])->find();
+
+        if ($salt == null) {
+            return false;
+        } else {
+            return true;
         }
     }
 }
