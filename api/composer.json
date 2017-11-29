@@ -18,7 +18,8 @@
     "require": {
         "php": ">=5.4.0",
         "topthink/framework": "~5.0.0",
-        "qcloud/cos-sdk-v5": "^1.1"
+        "qcloud/cos-sdk-v5": "^1.1",
+        "gaoming13/http-curl": "^2.2"
     },
     "autoload": {
         "psr-4": {
@@ -30,5 +31,11 @@
     },
     "config": {
         "preferred-install": "dist"
+    },
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://packagist.phpcomposer.com"
+        }
     }
 }
