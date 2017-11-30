@@ -13,25 +13,36 @@
             <p class="tag-subtitle" slot="title">基本信息</p>
             <Form :model="formItem" label-position="right" :label-width="120">
                 <Form-item label="直播间地址">
-                    <Input v-model="formItem.liveurl" placeholder="直播间地址，如 http://live.bilibili.com/35724"
-                            @on-blur="autoSave"></Input>
+                    <Input v-model="formItem.liveurl" placeholder="直播间地址，如 http://live.bilibili.com/35724" @on-blur="autoSave">
+                        <Button icon="search" slot="append" @click="getRoomId" v-if="isLogin">自动获取</Button>                        
+                    </Input>
                 </Form-item>
                 <Form-item label="背景图片地址">
-                    <Input v-model="formItem.bgimg" placeholder="背景图片地址"
-                            @on-blur="autoSave"></Input>
+                    <Input v-model="formItem.bgimg" placeholder="背景图片地址" @on-blur="autoSave">
+                        <Upload v-if="isLogin" action="http://api.bintro/v1/image/upload" slot="append" name="image" :data="{ user_token: userToken, filename: '背景图片' }" :show-upload-list="false" :on-success="onUploadSuccess" :on-error="onUploadError">
+                            <Button icon="upload" @click="onUploadClick('bg')">上传图片</Button>
+                        </Upload>
+                    </Input>
                 </Form-item>
                 <Form-item label="头像图片地址">
-                    <Input v-model="formItem.displayimg" placeholder="头像图片地址（推荐大小 140×140像素）"
-                            @on-blur="autoSave"></Input>
+                    <Input v-model="formItem.displayimg" placeholder="头像图片地址（推荐大小 140×140像素）" @on-blur="autoSave">
+                        <Upload v-if="isLogin" action="http://api.bintro/v1/image/upload" slot="append" name="image" :data="{ user_token: userToken, filename: '头像' }" :show-upload-list="false" :on-success="onUploadSuccess" :on-error="onUploadError">
+                            <Button icon="upload" @click="onUploadClick('face')">上传图片</Button>
+                        </Upload>
+                    </Input>
                 </Form-item>
                 <Form-item label="二维码地址">
-                    <Input v-model="formItem.qrimg" placeholder="二维码图片地址（推荐大小 140×140像素）"
-                            @on-blur="autoSave"></Input>
+                    <Input v-model="formItem.qrimg" placeholder="二维码图片地址（推荐大小 140×140像素）" @on-blur="autoSave">
+                        <Upload v-if="isLogin" action="http://api.bintro/v1/image/upload" slot="append" name="image" :data="{ user_token: userToken, filename: '二维码' }" :show-upload-list="false" :on-success="onUploadSuccess" :on-error="onUploadError">
+                            <Button icon="upload" @click="onUploadClick('qr')">上传图片</Button>
+                        </Upload>
+                    </Input>
                 </Form-item>
                 <Form-item label="二维码下方说明">
                     <Input v-model="formItem.qrintro" placeholder="二维码下方说明内容，可写HTML"
                             @on-blur="autoSave"></Input>
                 </Form-item>
+                <Spin size="large" fix v-if="loading"></Spin>
             </Form>
         </Card>
 
@@ -68,6 +79,9 @@
 
                 <Button type="success" size="large" icon="help" @click="toLink('/faq')">使用教程</Button>
                 <Button type="success" size="large" icon="alert" @click="codeDialog(true)">无法复制成功</Button>
+                <Button type="error" size="large" icon="checkmark" @click="setIntroduce" v-if="isLogin">一键设置简介</Button>
+                <Button type="error" size="large" icon="checkmark" @click="$router.push('/user/login')" v-else>立即登录，一键设置简介，不出差错！</Button>
+                
             </div>
         </div>
     </div>
@@ -95,11 +109,13 @@
                     qrintro: ''
                 },
                 tabDialogModel: false,
+                loading: false,
                 buildResult: '',
                 copyButton: {
                     tipInfo: '复制完毕',
                     tipDisabled: true
-                }
+                },
+                uploadType: ''
             }
         },
         methods: {
@@ -131,6 +147,7 @@
                 this.$http.post('http://bintro.smilec.cc/process/process.php', postObj, { emulateJSON: true }).then((response) => {
 					var body = response.body;
                     this.buildResult = body
+                    console.log(body)
 				});
             },
             checkForm () {
@@ -187,14 +204,101 @@
             },
             toLink (option) {
                 this.$router.push(option)
+            },
+            onUploadClick (type) {
+                this.uploadType = type
+                this.loading = true
+            },
+            onUploadSuccess (response, file, fileList) {
+                if (response.code === 1) {
+                    switch (this.uploadType) {
+                        case 'bg':
+                            this.formItem.bgimg = response.url
+                            break;
+                        case 'face':
+                            this.formItem.displayimg = response.url
+                            break;
+                        case 'qr':
+                            this.formItem.qrimg = response.url
+                            break;
+                        default:
+                            break;
+                    }
+                } else {
+                    this.$Modal.error({
+                        title: '上传失败',
+                        content: response.msg
+                    })
+                }
+                this.loading = false
+            },
+            onUploadError (error, file, fileList) {
+                this.$Modal.error({
+                    title: '上传失败',
+                    content: '上传失败，请联系站长或稍后再试'
+                })
+                this.loading = false                
+            },
+            setIntroduce () {
+                this.$Spin.show()
+                this.$http.post('http://api.bintro/v1/bilibili/set_introduce', {
+                    user_token: this.userToken,
+                    content: this.buildResult
+                }, { emulateJSON: true }).then(response => {
+                    let body = response.body
+                    if (body.code === 1) {
+                        this.$Notice.success({
+                            title: 'Success',
+                            desc: body.msg
+                        })
+                    }
+                    this.$Spin.hide()
+                })
+            },
+            getRoomId () {
+                this.loading = true
+                this.$http.post('http://api.bintro/v1/bilibili/get_roomid', {
+                    user_token: this.userToken
+                }, { emulateJSON: true }).then(response => {
+                    let body = response.body
+                    console.log(body)
+                    if (body.code === 1) {
+                        console.log(this)
+                        this.formItem.liveurl = body.url
+                    } else {
+                        this.$Notice.error({
+                            title: 'Error',
+                            desc: body.msg
+                        })
+                    }
+                    this.loading = false                    
+                })
             }
         },
-        computed: mapState({
-            tabs: state => state.tabs
-        }),
+        computed: {
+            ...mapState({
+                tabs: state => state.tabs,
+                userToken: state => state.user.userToken
+            }),
+            isLogin () {
+                return (this.userToken && this.userToken.length > 0)
+            }
+        },
         mounted () {
             // 加载存储的数据
-            this.formItem = JSON.parse(window.localStorage['baseConf'])
+            let storage = JSON.parse(window.localStorage['baseConf'])
+            if (storage.liveurl) this.formItem.liveurl = storage.liveurl
+            if (storage.bgimg) this.formItem.bgimg = storage.bgimg
+            if (storage.displayimg) this.formItem.displayimg = storage.displayimg
+            if (storage.qrimg) this.formItem.qrimg = storage.qrimg
+            if (storage.qrintro) this.formItem.qrintro = storage.qrintro
+
+            console.log(this.formItem.liveurl === undefined || this.formItem.liveurl.length === 0)
+            if (this.formItem.liveurl === undefined || this.formItem.liveurl.length === 0) {
+                if (this.isLogin) {
+                    this.getRoomId()
+                }
+            }
             this.$store.commit('loadTab')
         }
     }

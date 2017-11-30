@@ -9,6 +9,16 @@ class Base extends Controller
 {
     public function _initialize ()
     {
+        if (headers_sent() === false) {
+			header('Access-Control-Allow-Origin:*');
+			header('Access-Control-Expose-Headers:Content-Type, X-SMS-Session');
+			header('Access-Control-Allow-Headers:Origin, X-Requested-With, Content-Type, Accept');
+        }
+        
+        if (request()->isOptions()) {
+            exit;
+        }
+
         if (input('?user_token')) {
             $this->autoLogin(input('user_token'));
         }

@@ -22,4 +22,18 @@ class BilibiliCookie extends Model
         }
         return true;
     }
+
+    public function getCookie ($userId)
+    {
+        $cookie = $this->where('user_id', $userId)->find();
+        if ($cookie == null) {
+            return '';
+        } else {
+            if (empty($cookie['cookie'])) {
+                return '';
+            } else {
+                return $cookie['cookie'];
+            }
+        }
+    }
 }

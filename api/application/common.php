@@ -29,3 +29,16 @@ function isLogin ()
 {
     return array_key_exists('userId', $GLOBALS);
 }
+
+function checkResult ($result)
+{
+    if (array_key_exists('code', $result)) {
+        if ($result['code'] == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
+}

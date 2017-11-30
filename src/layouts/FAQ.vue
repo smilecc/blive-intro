@@ -1,8 +1,13 @@
 <template>
     <div>
-        <tutorial id="tutorial"></tutorial>
-        <hr />
-        <faq id="faq"></faq>
+        <div v-title>常见问题</div>
+        <nav-banner></nav-banner>
+        <div class="container">
+            <tutorial id="tutorial"></tutorial>
+            <hr />
+            <faq id="faq"></faq>
+        </div>
+        <Footerbar></Footerbar>
     </div>
 </template>
 

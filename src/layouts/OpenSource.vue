@@ -1,6 +1,9 @@
 <template>
     <div>
-        <opensource></opensource>
+        <div v-title>开源说明</div>
+        <nav-banner></nav-banner>
+        <opensource class="container"></opensource>
+        <Footerbar></Footerbar>
     </div>
 </template>
 

@@ -39,15 +39,15 @@ class User extends Model
             $userSaltDb = model('UserSalt');
             $random = $userSaltDb->buildSalt($user_id, $userSaltDb::TYPE_REGISTER);
             $password = $password . $random;
-            echo $password;
             $this->where('id', $user_id)->update([ 'password' => sha1($password) ]);
             
-            return result(1, '注册成功');
+            return result(1, '注册成功', [
+                'user_id' => $user_id
+            ]);
         
         } catch (\Exception $e) {
             trace($e, 'error');
             return result(0, $e->getMessage());
         }
     }
-
 }

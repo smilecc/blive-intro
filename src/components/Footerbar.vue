@@ -1,6 +1,6 @@
 <template>
     <footer>
-        Developed By Can.
+        Developed By <a href="https://github.com/smilecc" target="_blank">Can</a>.
     </footer>
 </template>
 
@@ -13,5 +13,8 @@
         color: white;
         padding-top: 17px;
         text-align: center;
+    }
+    a {
+        color: #ddd !important;
     }
 </style>

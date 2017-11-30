@@ -20,4 +20,9 @@ class UserImage extends Model
             'url' => $url
         ]);
     }
+
+    public function getImage ($userId)
+    {
+        return $this->where('user_id', $userId)->order('id desc')->select();
+    }
 }

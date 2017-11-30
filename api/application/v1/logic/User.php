@@ -48,7 +48,24 @@ class User extends Model
             return result(-2, '请输入大于6位的密码');
         }
 
-        return model('User')->createAccount($username, $email, $password);
+        $registerResult = model('User')->createAccount($username, $email, $password);
+        if (checkResult($registerResult)) {
+            // 制作 userToken
+            $userId = $registerResult['user_id'];
+            $userSaltDb = model('UserSalt');
+            $salt = $userSaltDb->buildSalt($userId, $userSaltDb::TYPE_LOGIN);
+
+            $tokenArr = [
+                'id' => $userId,
+                'token' => $salt
+            ];
+
+            return result(1, '注册成功', [
+                'token' => base64_encode(json_encode($tokenArr))
+            ]);
+        } else {
+            return $registerResult;
+        }
     }
 
     public function saveCookie ($cookie)
@@ -64,6 +81,32 @@ class User extends Model
             } catch (\Exception $e) {
                 throw $e;
                 return result(0, '保存失败，系统错误');
+            }
+        } else {
+            return result(0, '请登录后再进行操作');
+        }
+    }
+
+    public function getUserInfo ()
+    {
+        if (isLogin()) {
+            $user = model('User')->where('id', $GLOBALS['userId'])->find();
+
+            if ($user == null) {
+                return result(0, '用户信息无效');
+            } else {
+                $cookie = model('BilibiliCookie')->getCookie($GLOBALS['userId']);
+                $imageList = model('UserImage')->getImage($GLOBALS['userId']);
+
+                return result(1, '', [
+                    'user' => [
+                        'username' => $user['username'],
+                        'email' => $user['email'],
+                        'register_time' => $user['created_time'],
+                        'cookie' => $cookie,
+                        'image_list' => $imageList
+                    ]
+                ]);
             }
         } else {
             return result(0, '请登录后再进行操作');

@@ -30,4 +30,9 @@ class User extends Base
         
         return logic('User')->saveCookie($cookie);
     }
+
+    public function info ()
+    {
+        return logic('User')->getUserInfo();
+    }
 }

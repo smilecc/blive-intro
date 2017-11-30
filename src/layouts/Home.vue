@@ -1,8 +1,13 @@
 <template>
-    <div>
-        <demo></demo>
-        <maker></maker>
+  <div>
+    <div v-title>首页</div>
+    <nav-banner></nav-banner>
+    <div class="container">
+      <demo></demo>
+      <maker></maker>
     </div>
+    <Footerbar></Footerbar>
+  </div>
 </template>
 
 <script>

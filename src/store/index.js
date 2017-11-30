@@ -1,9 +1,11 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import Cookie from '@/plugins/cookie'
 
+Vue.use(Cookie)
 Vue.use(Vuex)
 
-export default new Vuex.Store({
+const store = new Vuex.Store({
   state: {
     navActiveName: 'Home',
     tabDialog: false,
@@ -53,3 +55,17 @@ export default new Vuex.Store({
     }
   }
 })
+
+store.registerModule('user', {
+  state: {
+    userToken: Vue.cookie.get('user_token')
+  },
+  mutations: {
+    setUserToken (state, payload) {
+      state.userToken = payload
+      Vue.cookie.set('user_token', payload, 30)
+    }
+  }
+})
+
+export default store
