@@ -36,7 +36,9 @@ const store = new Vuex.Store({
     },
     loadTab (state) { // 从localStorage中加载Tab
       state.tabs = JSON.parse(window.localStorage['tabs'])
-      state.tabInfo.id = state.tabs[state.tabs.length - 1].id + 1
+      if (state.tabs.length > 0) {
+        state.tabInfo.id = state.tabs[state.tabs.length - 1].id + 1
+      }
     },
     tabDialog (state, payload) { // 选项卡对话框操作
       if (typeof(payload) == 'object') {

@@ -9,7 +9,7 @@
           <p>我们保证不会滥用您的Cookie</p>
           
           <Button type="primary" long style="margin-top: 10px;" @click="onSubmit">提交 Cookie</Button>
-          <Button type="success" long style="margin-top: 10px;" @click="$router.push('/')" v-if="isSave">保存成功，点此立即去生成简介卡</Button>
+          <Button type="success" long style="margin-top: 10px;" @click="$router.push('/')" v-if="isSave">保存成功，点此去生成简介卡</Button>
           
         </Col>
         <Col span="12">
@@ -20,7 +20,7 @@
           <p>压缩版（52.09MB）：<a href="http://bintro-1251918581.file.myqcloud.com/win32-blive-cookie-1.0.zip">点击下载</a></p>
 
           <h3>2. 打开软件登录B站账户，获取Cookie</h3>
-          <p class="desc">获取到的Cookie填入左侧的输入框，点击提交即可。</p>
+          <p class="desc">登录后，Cookie获取工具右侧的文本框内将会出现我们所要获取的Cookie，将获取到的Cookie复制并填入本页面左侧的输入框，点击提交即可。</p>
 
           <h3>3. Cookie获取工具已开源</h3>
           <p class="desc">获取工具已经开源，如果您不放心或存在任何问题，可以到<a href="https://github.com/smilecc/blive-cookie" target="_blank">Github</a>审视代码、提交issue。</p>
@@ -46,7 +46,7 @@ export default {
     if (userToken && userToken.length > 0) {
       next(vm => {
         vm.loading(true)
-        vm.$http.post('http://api.bintro/v1/user/info', {
+        vm.$http.post('http://api.bintro.smilec.cc/v1/user/info', {
           user_token: vm.userToken
         }, { emulateJSON: true }).then(response => {
           let body = response.body
@@ -81,7 +81,7 @@ export default {
     },
     onSubmit () {
       this.loading(true)
-      this.$http.post('http://api.bintro/v1/user/set_cookie', {
+      this.$http.post('http://api.bintro.smilec.cc/v1/user/set_cookie', {
         user_token: this.userToken,
         cookie: this.cookie
       }, { emulateJSON: true }).then(response => {

@@ -61,7 +61,7 @@ export default {
     if (userToken && userToken.length > 0) {
       next(vm => {
         vm.loading(true)
-        vm.$http.post('http://api.bintro/v1/user/info', {
+        vm.$http.post('http://api.bintro.smilec.cc/v1/user/info', {
           user_token: vm.userToken
         }, { emulateJSON: true }).then(response => {
           let body = response.body

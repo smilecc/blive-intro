@@ -2,6 +2,12 @@
     <div>
         <div class="tag-title">制作与生成 <small>这些数据将会被自动保存，无须担心刷新页面</small></div>
         <Alert type="success" show-icon>
+            新功能发布！不再烦恼图片不知如何上传、简介卡错位！
+            <template slot="desc">
+                <span>本工具新推出 <strong>自动获取直播间地址、免费图片上传、一键把简介发布到直播间</strong> 等功能！好用疯了！注册后即可使用！<router-link to="/user/register">点此立即注册</router-link></span>
+            </template>
+        </Alert>
+        <Alert type="info" show-icon>
             提示
             <template slot="desc">
                 <span>B站直播近期进行了页面改版，导致之前生成的代码无法自动适应，现在已经修复，重新生成即可适应新版页面。</span>
@@ -14,28 +20,32 @@
             <Form :model="formItem" label-position="right" :label-width="120">
                 <Form-item label="直播间地址">
                     <Input v-model="formItem.liveurl" placeholder="直播间地址，如 http://live.bilibili.com/35724" @on-blur="autoSave">
-                        <Button icon="search" slot="append" @click="getRoomId" v-if="isLogin">自动获取</Button>                        
+                        <Button icon="search" slot="append" @click="getRoomId" v-if="isLogin">自动获取</Button>
+                        <Button icon="search" slot="append" @click="$router.push('/user/login')" v-else>自动获取</Button>                        
                     </Input>
                 </Form-item>
                 <Form-item label="背景图片地址">
                     <Input v-model="formItem.bgimg" placeholder="背景图片地址" @on-blur="autoSave">
-                        <Upload v-if="isLogin" action="http://api.bintro/v1/image/upload" slot="append" name="image" :data="{ user_token: userToken, filename: '背景图片' }" :show-upload-list="false" :on-success="onUploadSuccess" :on-error="onUploadError">
+                        <Upload v-if="isLogin" action="http://api.bintro.smilec.cc/v1/image/upload" slot="append" name="image" :data="{ user_token: userToken, filename: '背景图片' }" :show-upload-list="false" :on-success="onUploadSuccess" :on-error="onUploadError" :before-upload="beforeUpload">
                             <Button icon="upload" @click="onUploadClick('bg')">上传图片</Button>
                         </Upload>
+                        <Button icon="upload" slot="append" @click="$router.push('/user/login')" v-else>上传图片</Button>
                     </Input>
                 </Form-item>
                 <Form-item label="头像图片地址">
                     <Input v-model="formItem.displayimg" placeholder="头像图片地址（推荐大小 140×140像素）" @on-blur="autoSave">
-                        <Upload v-if="isLogin" action="http://api.bintro/v1/image/upload" slot="append" name="image" :data="{ user_token: userToken, filename: '头像' }" :show-upload-list="false" :on-success="onUploadSuccess" :on-error="onUploadError">
+                        <Upload v-if="isLogin" action="http://api.bintro.smilec.cc/v1/image/upload" slot="append" name="image" :data="{ user_token: userToken, filename: '头像' }" :show-upload-list="false" :on-success="onUploadSuccess" :on-error="onUploadError" :before-upload="beforeUpload">
                             <Button icon="upload" @click="onUploadClick('face')">上传图片</Button>
                         </Upload>
+                        <Button icon="upload" slot="append" @click="$router.push('/user/login')" v-else>上传图片</Button>                        
                     </Input>
                 </Form-item>
                 <Form-item label="二维码地址">
                     <Input v-model="formItem.qrimg" placeholder="二维码图片地址（推荐大小 140×140像素）" @on-blur="autoSave">
-                        <Upload v-if="isLogin" action="http://api.bintro/v1/image/upload" slot="append" name="image" :data="{ user_token: userToken, filename: '二维码' }" :show-upload-list="false" :on-success="onUploadSuccess" :on-error="onUploadError">
+                        <Upload v-if="isLogin" action="http://api.bintro.smilec.cc/v1/image/upload" slot="append" name="image" :data="{ user_token: userToken, filename: '二维码' }" :show-upload-list="false" :on-success="onUploadSuccess" :on-error="onUploadError" :before-upload="beforeUpload">
                             <Button icon="upload" @click="onUploadClick('qr')">上传图片</Button>
                         </Upload>
+                        <Button icon="upload" slot="append" @click="$router.push('/user/login')" v-else>上传图片</Button>                        
                     </Input>
                 </Form-item>
                 <Form-item label="二维码下方说明">
@@ -71,6 +81,10 @@
             <div v-html="buildResult"></div>
             
             <div class="result-buttons">
+                
+                <Button type="error" size="large" icon="checkmark" @click="setIntroduce" v-if="isLogin">一键发布到直播间</Button>
+                <Button type="error" size="large" icon="checkmark" @click="$router.push('/user/login')" v-else>立即登录，一键发布到直播间，不出差错！</Button>
+
                 <Poptip :content="copyButton.tipInfo" placement="top">
                     <Button type="primary" size="large" icon="clipboard"
                             v-clipboard="buildResult" 
@@ -79,9 +93,8 @@
 
                 <Button type="success" size="large" icon="help" @click="toLink('/faq')">使用教程</Button>
                 <Button type="success" size="large" icon="alert" @click="codeDialog(true)">无法复制成功</Button>
-                <Button type="error" size="large" icon="checkmark" @click="setIntroduce" v-if="isLogin">一键设置简介</Button>
-                <Button type="error" size="large" icon="checkmark" @click="$router.push('/user/login')" v-else>立即登录，一键设置简介，不出差错！</Button>
                 
+                <p style="margin-top: 5px; font-size: 14px">在提交Cookie之后，一键发布到直播间功能能帮助你把生成出的简介直接发布到你的直播间，不会发生错位、文字丢失等问题，简单方便，不出丝毫差错！</p>
             </div>
         </div>
     </div>
@@ -207,6 +220,8 @@
             },
             onUploadClick (type) {
                 this.uploadType = type
+            },
+            beforeUpload () {
                 this.loading = true
             },
             onUploadSuccess (response, file, fileList) {
@@ -241,7 +256,7 @@
             },
             setIntroduce () {
                 this.$Spin.show()
-                this.$http.post('http://api.bintro/v1/bilibili/set_introduce', {
+                this.$http.post('http://api.bintro.smilec.cc/v1/bilibili/set_introduce', {
                     user_token: this.userToken,
                     content: this.buildResult
                 }, { emulateJSON: true }).then(response => {
@@ -257,7 +272,7 @@
             },
             getRoomId () {
                 this.loading = true
-                this.$http.post('http://api.bintro/v1/bilibili/get_roomid', {
+                this.$http.post('http://api.bintro.smilec.cc/v1/bilibili/get_roomid', {
                     user_token: this.userToken
                 }, { emulateJSON: true }).then(response => {
                     let body = response.body
