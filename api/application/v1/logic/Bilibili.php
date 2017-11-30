@@ -47,7 +47,7 @@ class Bilibili extends Model
             } else {
                 return result(1, '', [
                     'roomid' => $roomid,
-                    'url' => 'http://live.bilibili.com/' . $roomid
+                    'url' => 'live.bilibili.com/' . $roomid
                 ]);
             }
         } else {

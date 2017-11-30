@@ -19,7 +19,7 @@
             <p class="tag-subtitle" slot="title">基本信息</p>
             <Form :model="formItem" label-position="right" :label-width="120">
                 <Form-item label="直播间地址">
-                    <Input v-model="formItem.liveurl" placeholder="直播间地址，如 http://live.bilibili.com/35724" @on-blur="autoSave">
+                    <Input v-model="formItem.liveurl" placeholder="直播间地址，如 live.bilibili.com/35724，不要带http" @on-blur="autoSave">
                         <Button icon="search" slot="append" @click="getRoomId" v-if="isLogin">自动获取</Button>
                         <Button icon="search" slot="append" @click="$router.push('/user/login')" v-else>自动获取</Button>                        
                     </Input>
