@@ -18,8 +18,8 @@
     "require": {
         "php": ">=5.4.0",
         "topthink/framework": "~5.0.0",
-        "qcloud/cos-sdk-v5": "^1.1",
-        "gaoming13/http-curl": "^2.2"
+        "gaoming13/http-curl": "^2.2",
+        "qcloud/cos-sdk-v4": "^4.3"
     },
     "autoload": {
         "psr-4": {
