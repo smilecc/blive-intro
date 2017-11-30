@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.5.1
--- http://www.phpmyadmin.net
+-- version 4.6.4
+-- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 2017-11-30 00:09:00
--- 服务器版本： 5.7.11
--- PHP Version: 5.6.19
+-- Generation Time: 2017-11-30 10:57:01
+-- 服务器版本： 5.7.14
+-- PHP Version: 7.0.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -51,6 +51,21 @@ CREATE TABLE `user` (
 -- --------------------------------------------------------
 
 --
+-- 表的结构 `user_image`
+--
+
+CREATE TABLE `user_image` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `filename` varchar(16) COLLATE utf8_unicode_ci NOT NULL,
+  `url` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
+  `filesize` int(11) NOT NULL DEFAULT '0',
+  `created_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- 表的结构 `user_salt`
 --
 
@@ -81,6 +96,12 @@ ALTER TABLE `user`
   ADD KEY `email` (`email`);
 
 --
+-- Indexes for table `user_image`
+--
+ALTER TABLE `user_image`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `user_salt`
 --
 ALTER TABLE `user_salt`
@@ -102,6 +123,11 @@ ALTER TABLE `bilibili_cookie`
 -- 使用表AUTO_INCREMENT `user`
 --
 ALTER TABLE `user`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- 使用表AUTO_INCREMENT `user_image`
+--
+ALTER TABLE `user_image`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- 使用表AUTO_INCREMENT `user_salt`
