@@ -6,7 +6,7 @@
 
 <style scoped>
     footer {
-        margin-top: 70px;
+        margin-top: 90px;
         height: 60px;
         background-color: #AAA;
         font-size: 18px;

@@ -12,7 +12,7 @@
                     </Menu-item>
                     <Menu-item name="UserProfile">
                         <Icon type="android-person"></Icon>
-                        用户
+                        {{ isLogin ? '用户' : '登录' }}
                     </Menu-item>
                     <Menu-item name="FAQ">
                         <Icon type="help-circled"></Icon>
@@ -34,8 +34,12 @@ import { mapState } from 'vuex'
 export default {
     computed: {
         ...mapState({
-            activeName: state => state.navActiveName
-        })
+            activeName: state => state.navActiveName,
+            userToken: state => state.user.userToken
+        }),
+        isLogin () {
+            return (this.userToken && this.userToken.length > 0)
+        }
     },
     methods: {
         routerSelect (key) {

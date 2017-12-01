@@ -7,7 +7,7 @@
         <Alert show-icon class="tips">
             提示
             <Icon type="ios-lightbulb-outline" slot="icon"></Icon>
-            <template slot="desc">注册后您可以享受免费的图片上传、一键设置简介等功能。</template>
+            <template slot="desc">注册后您可以享受 <strong>免费的图片上传、一键把简介发布到直播间、自动获取直播间地址</strong> 等功能。</template>
         </Alert>
         <FormItem label="用户名">
             <Input type="text" v-model="form.username" placeholder="请输入用户名">
@@ -46,7 +46,7 @@ export default {
   },
   methods: {
     onSubmit () {
-      this.$http.post('http://api.bintro/v1/user/register', {
+      this.$http.post('http://api.bintro.smilec.cc/v1/user/register', {
         username: this.form.username,
         email: this.form.email,
         password: this.form.password

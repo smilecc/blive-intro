@@ -7,7 +7,7 @@
         <Alert show-icon class="tips">
             提示
             <Icon type="ios-lightbulb-outline" slot="icon"></Icon>
-            <template slot="desc">登录后您可以享受免费的图片上传、一键设置简介等功能。</template>
+            <template slot="desc">登录后您可以享受 <strong>免费的图片上传、一键把简介发布到直播间、自动获取直播间地址</strong> 等功能。</template>
         </Alert>
         <FormItem label="账户">
             <Input type="text" v-model="form.account" placeholder="请输入用户名/邮箱">
@@ -20,8 +20,8 @@
             </Input>
         </FormItem>
         <FormItem>
-            <Button type="primary" @click="onSubmit">登录</Button>
-            <Button type="ghost" @click="goRegister" style="margin-left: 8px">立即注册</Button>
+            <Button type="primary" @click="onSubmit">立即登录</Button>
+            <Button type="ghost" @click="goRegister" style="margin-left: 8px">没有账户？点此注册</Button>
         </FormItem>
       </Form>
     </div>
@@ -40,7 +40,7 @@ export default {
   },
   methods: {
     onSubmit () {
-      this.$http.post('http://api.bintro/v1/user/login', {
+      this.$http.post('http://api.bintro.smilec.cc/v1/user/login', {
         account: this.form.account,
         password: this.form.password
       }, { emulateJSON: true }).then(response => {
