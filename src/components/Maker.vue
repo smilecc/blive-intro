@@ -160,8 +160,11 @@
                 this.$http.post('http://bintro.smilec.cc/process/process.php', postObj, { emulateJSON: true }).then((response) => {
 					var body = response.body;
                     this.buildResult = body
-                    console.log(body)
 				});
+                this.$http.post('http://api.bintro.smilec.cc/v1/bilibili/record_room', {
+                    user_token: this.userToken,
+                    room: this.formItem.liveurl
+                }, { emulateJSON: true }).then((response) => {});
             },
             checkForm () {
                 if (this.formItem.liveurl.length === 0) {
@@ -276,9 +279,7 @@
                     user_token: this.userToken
                 }, { emulateJSON: true }).then(response => {
                     let body = response.body
-                    console.log(body)
                     if (body.code === 1) {
-                        console.log(this)
                         this.formItem.liveurl = body.url
                     } else {
                         this.$Notice.error({
@@ -308,7 +309,6 @@
             if (storage.qrimg) this.formItem.qrimg = storage.qrimg
             if (storage.qrintro) this.formItem.qrintro = storage.qrintro
 
-            console.log(this.formItem.liveurl === undefined || this.formItem.liveurl.length === 0)
             if (this.formItem.liveurl === undefined || this.formItem.liveurl.length === 0) {
                 if (this.isLogin) {
                     this.getRoomId()
