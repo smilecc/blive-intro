@@ -281,6 +281,7 @@
                     let body = response.body
                     if (body.code === 1) {
                         this.formItem.liveurl = body.url
+                        this.autoSave()
                     } else {
                         this.$Notice.error({
                             title: 'Error',
