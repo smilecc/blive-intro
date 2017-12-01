@@ -54,4 +54,20 @@ class Bilibili extends Model
             return result(0, '请登录后再进行操作');
         }
     }
+
+    public function recordRoom ($room)
+    {
+        if (isLogin()) {
+            $userId = $GLOBALS['userId'];
+        } else {
+            $userId = null;
+        }
+
+        try {
+            model('BilibiliRoom')->record($room, $userId);
+            return result(1, 'ok');
+        } catch (\Exception $e) {
+            return result(0, 'error');
+        }
+    }
 }

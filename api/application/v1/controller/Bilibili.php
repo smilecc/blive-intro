@@ -18,4 +18,11 @@ class Bilibili extends Base
     {
         return logic('Bilibili')->getRoomId();
     }
+
+    public function record_room ()
+    {
+        $room = input('room');
+
+        return logic('Bilibili')->recordRoom($room);
+    }
 }
