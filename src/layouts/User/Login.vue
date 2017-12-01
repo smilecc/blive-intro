@@ -45,7 +45,6 @@ export default {
         password: this.form.password
       }, { emulateJSON: true }).then(response => {
         let body = response.body
-        console.log(body)
         if (body.code === 1) {
           this.$store.commit('setUserToken', body.token)
           this.$Notice.success({
