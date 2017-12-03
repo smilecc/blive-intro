@@ -269,6 +269,11 @@
                             title: 'Success',
                             desc: body.msg
                         })
+                    } else {
+                        this.$Modal.error({
+                            title: 'Error',
+                            content: body.msg
+                        })
                     }
                     this.$Spin.hide()
                 })
